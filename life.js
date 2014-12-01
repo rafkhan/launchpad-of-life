@@ -108,7 +108,7 @@ window.onload = function() {
 
     console.log('Using IO devices:', lp);
 
-    function pad(x, y, on) {
+    function setPad(x, y, on) {
       var state = on ? 11 : 12;
       var btn = (16 * y) + x;
       lp.output.send([144, btn, state]);
@@ -116,8 +116,14 @@ window.onload = function() {
 
     var board = getClearBoard();
 
+    //TODO setup board better
+    board[3][3] = true;
+    board[4][3] = true;
+    board[5][3] = true;
+
     setInterval(function() {
-      
+      board = tick(board);
+      drawBoard(board, setPad);
     }, 400);
 
   });
