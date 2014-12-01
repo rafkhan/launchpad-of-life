@@ -114,7 +114,26 @@ window.onload = function() {
       lp.output.send([144, btn, state]);
     }
 
+    
+    function setPadGreen(x, y, on) {
+      var state = on ? 56 : 12;
+      var btn = (16 * y) + x;
+      lp.output.send([144, btn, state]);
+    }
+
+
     var board = getClearBoard();
+
+    lp.input.onmidimessage = function(ev) {
+      var key = ev.data[1];
+      if(ev.data[2] > 0) {
+        var x = key % 16;
+        var y = Math.floor(key / 16);
+
+        setPadGreen(x, y, true);
+        board[y][x] = true;
+      }
+    };
 
     //TODO setup board better
     board[3][3] = true;
@@ -124,7 +143,7 @@ window.onload = function() {
     setInterval(function() {
       board = tick(board);
       drawBoard(board, setPad);
-    }, 400);
+    }, 200);
 
   });
   
